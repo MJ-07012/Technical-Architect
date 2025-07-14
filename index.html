@@ -1,61 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Marlon Jordan | IT Software Asset Management Specialist</title>
+    <title>Marlon Jordan | Technical Architect Portfolio</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- Chosen Palette: Calm Harmony -->
-    <!-- Application Structure Plan: The app is redesigned to prioritize recruiter efficiency. It starts with a hero section containing a direct call-to-action to the 'Role Alignment' section. This is followed by a bar chart of core competencies for a quick skill overview. The new 'Role Alignment' section is the centerpiece, using a side-by-side comparison to directly map Marlon's experience to the job's needs. The detailed professional experience, expanded certifications, and skills sections follow, providing comprehensive support for the initial claims. This structure is designed to prove candidate fitness first, then provide the details. -->
-    <!-- Visualization & Content Choices: Report Info (Resume Competencies) -> Goal (Quick proficiency overview) -> Viz (Horizontal Bar Chart) -> Interaction (None, static view) -> Justification (Clear, scannable summary of skills). Report Info (Job Description vs. Resume) -> Goal (Directly prove candidate fit) -> Viz (Two-column card layout) -> Interaction (CSS hover effect) -> Justification (Creates a visually engaging focal point that directly answers the recruiter's main question). Report Info (Certifications) -> Goal (Explain value) -> Viz (Descriptive cards) -> Justification (Adds depth and context beyond just listing the certs). Charts use Chart.js on Canvas. -->
+    <!-- Application Structure Plan: The application is redesigned as a narrative portfolio. It starts with a direct intro and call-to-action, then flows logically: 1) Core Competencies (bar chart for a quick quantitative overview), 2) Professional Experience (interactive toggles for deep-dive), 3) Role Alignment (the key section, a visual mapping of needs vs. skills), 4) Certifications (explaining the 'why'), and 5) Skills (a quick reference). This structure guides the recruiter from a high-level summary to detailed proof points, prioritizing the most impactful information first. -->
+    <!-- Visualization & Content Choices: 
+        1. Core Competencies: Report Info: Key professional skills. Goal: Quantify expertise. Viz: Horizontal Bar Chart (Chart.js). Interaction: Tooltips. Justification: Better for long labels and provides an easy-to-digest visual summary of strengths.
+        2. Role Alignment: Report Info: Mapping JD needs to resume points. Goal: Prove direct fit. Viz: Two-column cards with connecting visuals (HTML/Tailwind). Interaction: Hover effect (glow, lift). Justification: Creates a visually engaging and convincing argument for candidacy, making it the centerpiece.
+        3. Certifications: Report Info: PMP & ITIL certs. Goal: Explain strategic value. Viz: Descriptive cards (HTML/Tailwind). Interaction: None. Justification: Focuses on clear, persuasive text to explain the relevance of each certification.
+        4. Experience: Report Info: Original vs. optimized bullets. Goal: Show resume evolution. Viz: Toggled content (HTML/JS). Interaction: Click to switch. Justification: Re-used from v1 as it's an effective way to show tangible improvements.
+    -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
-        html { scroll-behavior: smooth; }
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #F8F7F4;
-            color: #3D3D3D;
-        }
-        .accent-bg { background-color: #4A6D7C; }
-        .accent-text { color: #4A6D7C; }
-        .accent-border { border-color: #4A6D7C; }
-        .subtle-bg { background-color: #EAE8E1; }
-        .alignment-section {
-            background: linear-gradient(180deg, #F8F7F4 0%, #F0EEEC 100%);
-        }
-        .alignment-card {
-            background-color: white;
-            border: 1px solid #EAE8E1;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .alignment-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        }
-        .job-details {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.5s ease-out;
-        }
-        .job-details.open {
-            max-height: 500px;
-        }
-        .chart-container {
-            position: relative;
-            width: 100%;
-            max-width: 500px;
-            margin-left: auto;
-            margin-right: auto;
-            height: 400px;
-            max-height: 500px;
+            background-color: #F8F7F4; /* Warm Neutral */
+            color: #3D3B38;
         }
         .nav-link {
             position: relative;
-            transition: color 0.3s ease;
+            transition: color 0.3s;
         }
         .nav-link::after {
             content: '';
@@ -64,291 +35,292 @@
             height: 2px;
             bottom: -4px;
             left: 50%;
-            background-color: #4A6D7C;
+            transform: translateX(-50%);
+            background-color: #D97706; /* Amber Accent */
+            transition: width 0.3s;
+        }
+        .nav-link.active, .nav-link:hover {
+            color: #D97706;
+        }
+        .nav-link.active::after, .nav-link:hover::after {
+            width: 100%;
+        }
+        .alignment-card {
+            background-color: #FFFFFF;
+            border: 1px solid #E7E5E4;
             transition: all 0.3s ease-in-out;
         }
-        .nav-link:hover::after {
+        .alignment-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.07);
+            border-color: #FBBF24; /* Lighter Amber for hover */
+        }
+        .chart-container {
+            position: relative;
             width: 100%;
-            left: 0;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+            max-height: 500px;
+        }
+        .experience-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+        }
+        .experience-card.open .experience-content {
+            max-height: 500px; /* Adjust as needed */
+        }
+        .experience-toggle-icon {
+            transition: transform 0.3s ease-in-out;
+        }
+        .experience-card.open .experience-toggle-icon {
+            transform: rotate(45deg);
         }
     </style>
 </head>
 <body class="antialiased">
 
-    <header class="bg-white shadow-sm sticky top-0 z-50">
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-stone-200/80">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <div>
-                <h1 class="text-xl font-bold text-gray-800">Marlon Jordan</h1>
-                <p class="text-sm text-gray-500">IT Software Asset Management Specialist</p>
-            </div>
-            <div class="hidden md:flex items-center space-x-8">
-                <a href="#alignment" class="nav-link text-gray-600 hover:accent-text">Role Alignment</a>
-                <a href="#experience" class="nav-link text-gray-600 hover:accent-text">Experience</a>
-                <a href="#certs" class="nav-link text-gray-600 hover:accent-text">Certifications</a>
-                <a href="#skills" class="nav-link text-gray-600 hover:accent-text">Skills</a>
-            </div>
+            <h1 class="text-xl font-bold text-stone-800">Marlon Jordan</h1>
+            <ul class="hidden md:flex space-x-6 text-stone-600 font-medium">
+                <li><a href="#competencies" class="nav-link">Competencies</a></li>
+                <li><a href="#experience" class="nav-link">Experience</a></li>
+                <li><a href="#alignment" class="nav-link">Role Alignment</a></li>
+                <li><a href="#certifications" class="nav-link">Certifications</a></li>
+                <li><a href="#skills" class="nav-link">Skills</a></li>
+            </ul>
         </nav>
     </header>
 
-    <main class="container mx-auto px-6">
-
-        <section id="hero" class="text-center py-20">
-            <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Optimizing Software Assets, Driving Business Value</h2>
-            <p class="max-w-3xl mx-auto text-lg text-gray-600 mb-8">
-                A technical and analytical professional with a decade of experience in IT operations, specializing in the full lifecycle of software asset management. I translate data into strategy, ensuring compliance, reducing waste, and directly supporting budget and procurement goals.
-            </p>
+    <main class="container mx-auto p-6 md:p-8">
+        
+        <section id="intro" class="py-20 md:py-28 text-center">
+            <h2 class="text-4xl md:text-5xl font-bold text-stone-800 mb-4">Aspiring Technical Architect at Miro</h2>
+            <p class="max-w-2xl mx-auto text-lg text-stone-600 mb-8">A customer-focused technical leader dedicated to designing solutions that bridge business goals with robust technology.</p>
             <div class="flex justify-center items-center space-x-4">
-                <a href="#alignment" class="accent-bg text-white px-8 py-3 rounded-md font-semibold hover:bg-opacity-90 transition shadow-lg">See Role Alignment</a>
-                <a href="https://linkedin.com/in/mj2117" target="_blank" rel="noopener noreferrer" class="text-gray-600 hover:accent-text font-semibold transition">LinkedIn Profile →</a>
+                <a href="#alignment" class="bg-amber-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-amber-700 transition-colors">View Role Alignment</a>
+                <a href="https://linkedin.com/in/mj2117" target="_blank" class="bg-stone-200 text-stone-800 font-bold py-3 px-8 rounded-lg hover:bg-stone-300 transition-colors">LinkedIn Profile</a>
             </div>
         </section>
         
-        <section id="competencies" class="py-20">
-            <div class="text-center mb-12">
-                <h3 class="text-3xl font-bold text-gray-900">Core Competencies</h3>
-                <p class="text-md text-gray-500 mt-2">A summary of my expertise in key areas of Software Asset Management.</p>
-            </div>
-            <div class="bg-white p-8 rounded-lg shadow-lg">
-                <div class="chart-container">
+        <section id="competencies" class="py-12 md:py-16">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-stone-800 mb-4">Core Competencies</h2>
+            <p class="max-w-3xl mx-auto text-center text-lg text-stone-600 mb-12">A visual overview of my key strengths, demonstrating a strong foundation in the areas critical for a Technical Architect.</p>
+            <div class="bg-white p-6 rounded-xl shadow-lg border border-stone-200/80">
+                 <div class="chart-container">
                     <canvas id="competencyChart"></canvas>
                 </div>
             </div>
         </section>
 
-        <section id="alignment" class="py-20 alignment-section -mx-6 px-6">
-            <div class="text-center mb-16 container mx-auto">
-                <h3 class="text-3xl font-bold text-gray-900">Candidate Alignment</h3>
-                <p class="text-md text-gray-500 mt-2 max-w-3xl mx-auto">A direct comparison of Abnormal AI's requirements for the SAM Specialist role and my demonstrated experience. Hover over each card to see the connection.</p>
-            </div>
-            <div class="container mx-auto grid lg:grid-cols-2 gap-10">
-                <div class="alignment-card rounded-lg p-8">
-                    <h4 class="text-lg font-semibold accent-text mb-2">What Abnormal Needs:</h4>
-                    <p class="text-gray-800 font-bold text-xl mb-4">License Optimization & Waste Reduction</p>
-                    <p class="text-gray-600">"Monitor software usage and reclaim licenses from inactive users... Identify duplicative or underused systems and lead the initiative to reduce waste."</p>
-                </div>
-                <div class="alignment-card rounded-lg p-8">
-                    <h4 class="text-lg font-semibold text-green-700 mb-2">How I Deliver:</h4>
-                    <p class="text-gray-800 font-bold text-xl mb-4">$150K Savings & Proactive Reclamation</p>
-                    <p class="text-gray-600">"Monitored software usage and optimized license allocation for over 300 users, leading a reclamation project for inactive accounts... achieving approximately $150,000 in annual departmental savings."</p>
-                </div>
-                <div class="alignment-card rounded-lg p-8">
-                    <h4 class="text-lg font-semibold accent-text mb-2">What Abnormal Needs:</h4>
-                    <p class="text-gray-800 font-bold text-xl mb-4">Contract & Renewal Management</p>
-                    <p class="text-gray-600">"Track and maintain all IT software agreements... Collaborate with Procurement to begin renewal conversations at least 90 days in advance; provide support materials."</p>
-                </div>
-                <div class="alignment-card rounded-lg p-8">
-                    <h4 class="text-lg font-semibold text-green-700 mb-2">How I Deliver:</h4>
-                    <p class="text-gray-800 font-bold text-xl mb-4">Cross-Functional Renewal Leadership</p>
-                    <p class="text-gray-600">"Acted as the central point of contact for software renewals, collaborating with IT, Finance, and Procurement by providing usage reports and contract summaries to support renewal conversations 90+ days in advance."</p>
-                </div>
-                 <div class="alignment-card rounded-lg p-8">
-                    <h4 class="text-lg font-semibold accent-text mb-2">What Abnormal Needs:</h4>
-                    <p class="text-gray-800 font-bold text-xl mb-4">Platform Ownership & Reporting</p>
-                    <p class="text-gray-600">"Implement, configure, and maintain a SAM tool... Deliver regular dashboards and reports on license utilization, renewals, compliance risks."</p>
-                </div>
-                <div class="alignment-card rounded-lg p-8">
-                    <h4 class="text-lg font-semibold text-green-700 mb-2">How I Deliver:</h4>
-                    <p class="text-gray-800 font-bold text-xl mb-4">Data-Driven Budgeting Support</p>
-                    <p class="text-gray-600">"Developed and delivered regular dashboards on software utilization, translating asset data into actionable insights that informed IT budget cycles and future financial planning."</p>
-                </div>
+        <section id="experience" class="py-12 md:py-16">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-stone-800 mb-4">Professional Experience</h2>
+             <p class="max-w-3xl mx-auto text-center text-lg text-stone-600 mb-12">An interactive look at my career progression. Click on any role to expand and see the key accomplishments, reframed to highlight customer-centric outcomes.</p>
+            <div class="space-y-4" id="experience-container"></div>
+        </section>
+        
+        <section id="alignment" class="py-12 md:py-16 bg-stone-50 rounded-2xl">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-stone-800 mb-4">Role Alignment: Miro & Marlon Jordan</h2>
+            <p class="max-w-3xl mx-auto text-center text-lg text-stone-600 mb-12">A direct comparison showing how my skills and experience specifically address the needs of the Technical Architect role at Miro.</p>
+            <div class="grid md:grid-cols-1 lg:grid-cols-2 gap-8" id="alignment-container">
             </div>
         </section>
 
-        <section id="experience" class="py-20">
-            <div class="text-center mb-12">
-                <h3 class="text-3xl font-bold text-gray-900">Professional Experience</h3>
-                <p class="text-md text-gray-500 mt-2">A detailed overview of my professional history. Click each role to expand.</p>
-            </div>
-            <div class="max-w-4xl mx-auto space-y-4">
-                <div class="job-item bg-white p-6 rounded-lg shadow-md cursor-pointer">
-                    <div class="flex justify-between items-center">
-                        <div>
-                            <h4 class="text-xl font-bold">Product Operations Specialist</h4>
-                            <p class="text-gray-600">Bloomberg LP | Aug 2021 - Nov 2024</p>
-                        </div>
-                        <span class="text-2xl accent-text transform transition-transform duration-300">+</span>
-                    </div>
-                    <div class="job-details mt-4 border-t pt-4">
-                        <ul class="list-disc list-inside space-y-2 text-gray-700">
-                            <li>Directed full implementation of 4+ SaaS solutions, overseeing lifecycle management for over 10 critical SaaS vendors and achieving approximately $150,000 in annual departmental savings through contract negotiations.</li>
-                            <li>Monitored software usage and optimized license allocation for over 300 users, leading a reclamation project for inactive accounts that contributed to significant cost savings and enhanced security.</li>
-                            <li>Developed and delivered regular dashboards on software utilization, translating asset data into actionable insights that informed IT budget cycles and future financial planning.</li>
-                            <li>Acted as the central point of contact for software renewals, collaborating with IT, Finance, and Procurement by providing usage reports and contract summaries to support renewal conversations 90+ days in advance.</li>
-                        </ul>
-                    </div>
-                </div>
-                 <div class="job-item bg-white p-6 rounded-lg shadow-md cursor-pointer">
-                    <div class="flex justify-between items-center">
-                        <div>
-                            <h4 class="text-xl font-bold">Technical Support Lead Executive</h4>
-                            <p class="text-gray-600">Bloomberg LP | May 2017 - Aug 2021</p>
-                        </div>
-                        <span class="text-2xl accent-text transform transition-transform duration-300">+</span>
-                    </div>
-                    <div class="job-details mt-4 border-t pt-4">
-                        <ul class="list-disc list-inside space-y-2 text-gray-700">
-                            <li>Delivered confidential, high-priority technical support to key executives, demonstrating strong communication and problem-solving skills with critical stakeholders.</li>
-                            <li>Managed the operational administration of key enterprise software, including Google, Zoom, and Microsoft, ensuring optimal configuration and performance.</li>
-                            <li>Led a team of 7 through a Windows 10 migration for 8,000 users, showcasing project leadership and a focus on minimizing user disruption.</li>
-                        </ul>
-                    </div>
-                </div>
+        <section id="certifications" class="py-12 md:py-16">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-stone-800 mb-4">Strategic Certifications</h2>
+            <p class="max-w-3xl mx-auto text-center text-lg text-stone-600 mb-12">My certifications are more than just credentials; they represent a formal commitment to the methodologies that ensure successful project delivery and service management.</p>
+            <div class="grid md:grid-cols-2 gap-8" id="certifications-container">
             </div>
         </section>
 
-        <section id="certs" class="py-20">
-            <div class="text-center mb-12">
-                <h3 class="text-3xl font-bold text-gray-900">Strategic Certifications</h3>
-                <p class="text-md text-gray-500 mt-2">My certifications provide a strategic framework for my hands-on experience.</p>
-            </div>
-            <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h4 class="font-bold text-xl mb-2">ITIL v4 Foundation</h4>
-                    <p class="text-gray-600">This certification provides a framework for service management that is crucial for SAM. It informs how I establish governance and repeatable processes, a skill I used when chairing Incident Management rotations and meeting 100% of critical SLAs.</p>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h4 class="font-bold text-xl mb-2">Project Management Professional (PMP)</h4>
-                    <p class="text-gray-600">The PMP validates my ability to lead complex initiatives, such as implementing a SAM tool or leading a software rationalization project. My experience leading a migration for 8,000 users demonstrates this skill in practice.</p>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h4 class="font-bold text-xl mb-2">Certified Scrum Product Owner (CSPO)</h4>
-                    <p class="text-gray-600">As a CSPO, I understand how to manage a product backlog and prioritize work to deliver maximum value. This is directly applicable to managing a SAM platform, ensuring its features and reports align with stakeholder needs.</p>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h4 class="font-bold text-xl mb-2">CSAM (In Progress)</h4>
-                    <p class="text-gray-600">My ongoing pursuit of the Certified Software Asset Manager certification demonstrates a dedicated commitment to this specific field and a proactive desire to master its best practices and formal methodologies.</p>
-                </div>
+        <section id="skills" class="py-12 md:py-16">
+             <h2 class="text-3xl md:text-4xl font-bold text-center text-stone-800 mb-4">Technical Proficiencies</h2>
+             <p class="max-w-3xl mx-auto text-center text-lg text-stone-600 mb-12">A summary of the key technologies and platforms I have experience with.</p>
+            <div class="bg-white p-8 rounded-xl shadow-lg border border-stone-200/80" id="skills-container">
             </div>
         </section>
-
-        <section id="skills" class="py-20">
-            <div class="text-center mb-12">
-                <h3 class="text-3xl font-bold text-gray-900">Technical Skills</h3>
-            </div>
-            <div class="bg-white p-8 rounded-lg shadow-lg max-w-4xl mx-auto">
-                <div class="grid md:grid-cols-2 gap-8">
-                    <div>
-                        <h4 class="font-bold text-lg mb-4">SAM Platforms</h4>
-                        <p class="text-gray-600">Hands-on experience with Bloomberg internal SAM systems.</p>
-                    </div>
-                    <div>
-                        <h4 class="font-bold text-lg mb-4">Licensing Models</h4>
-                        <p class="text-gray-600">Strong knowledge of SaaS, subscription, perpetual, and major vendor licensing models (Microsoft, Google, Slack, Zoom).</p>
-                    </div>
-                    <div>
-                        <h4 class="font-bold text-lg mb-4">Tools & Methodologies</h4>
-                        <div class="flex flex-wrap gap-2 mt-2">
-                           <span class="subtle-bg text-gray-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded-full">ITIL</span>
-                           <span class="subtle-bg text-gray-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded-full">Agile/Scrum</span>
-                           <span class="subtle-bg text-gray-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded-full">Jira</span>
-                           <span class="subtle-bg text-gray-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded-full">Active Directory</span>
-                           <span class="subtle-bg text-gray-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded-full">SCCM</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
     </main>
 
-    <footer class="bg-gray-800 text-white mt-20">
-        <div class="container mx-auto px-6 py-12 text-center">
-            <p class="text-2xl font-bold mb-2">Let's build a more efficient future.</p>
-            <p class="text-gray-300 mb-6">I am ready to bring my expertise in software asset management to Abnormal AI. Let's connect.</p>
-            <div class="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-6">
-                <a href="mailto:Marlon.Jordan21@gmail.com" class="text-lg text-white hover:text-gray-300 transition">Marlon.Jordan21@gmail.com</a>
-                <span class="hidden md:block text-gray-500">|</span>
-                <a href="tel:646-249-6025" class="text-lg text-white hover:text-gray-300 transition">(646) 249-6025</a>
+    <footer class="bg-stone-100 mt-16">
+        <div class="container mx-auto px-6 py-8 text-center text-stone-600 font-medium">
+            <div class="flex justify-center items-center space-x-6 mb-4">
+                <a href="mailto:Marlon.Jordan21@gmail.com" class="hover:text-amber-600 transition-colors">Marlon.Jordan21@gmail.com</a>
+                <span class="text-stone-400">&bull;</span>
+                <a href="tel:646-249-6025" class="hover:text-amber-600 transition-colors">(646) 249-6025</a>
             </div>
+            <p class="text-sm text-stone-500">&copy; 2025 Marlon Jordan. An interactive portfolio for the Technical Architect role at Miro.</p>
         </div>
     </footer>
 
     <script>
+        const appData = {
+            competencies: [
+                { name: 'Stakeholder Management', score: 95 },
+                { name: 'Cross-Functional Collaboration', score: 90 },
+                { name: 'Customer Onboarding & Implementation', score: 88 },
+                { name: 'Technical Consulting', score: 85 },
+                { name: 'Change Management', score: 82 },
+                { name: 'Migration Strategy', score: 80 },
+                { name: 'Process Improvement', score: 92 },
+            ],
+            experience: [
+                {
+                    role: "Product Operations Specialist",
+                    company: "Bloomberg LP",
+                    bullets: [
+                        "Oversaw the technical consulting, onboarding, and deployment for 4+ enterprise solutions, ensuring alignment with customer security, scalability, and account structure requirements.",
+                        "Led customer discovery sessions to identify technical requirements and key stakeholder responsibilities, optimizing account health and deepening relationships with business leaders.",
+                        "Collaborated with Customer Success, Sales, and Product teams to provide technical insights and usage data, ensuring clear project roles and effective communication."
+                    ]
+                },
+                {
+                    role: "Technical Support Lead Executive",
+                    company: "Bloomberg LP",
+                    bullets: [
+                        "Provided technical training on administrative configurations for enterprise software, ensuring optimal performance and security for key stakeholders.",
+                        "Developed and executed a migration deployment plan to transition 8,000 stakeholders to a new platform, providing change management guidance to ensure a seamless transition."
+                    ]
+                },
+                {
+                    role: "Senior IT Support Engineer",
+                    company: "Bloomberg LP",
+                    bullets: [
+                        "Delivered technical support for enterprise security solutions, including identity providers like Active Directory and Azure AD for a 15,000-seat organization.",
+                        "Chaired Incident Management rotations, improving weekend incident response times and consistently meeting 100% of critical service level agreements for system issues.",
+                        "Partnered with system administrators to upgrade IT self-service tools, reducing support ticket volume by empowering end-users to resolve common issues independently."
+                    ]
+                }
+            ],
+            alignment: [
+                { need: "Lead discovery sessions to align technical requirements with business outcomes.", provide: "I have direct experience leading customer discovery sessions to identify technical needs and stakeholder responsibilities, ensuring solutions meet business goals." },
+                { need: "Oversee technical consulting, onboarding, and deployment for Enterprise customers.", provide: "My background includes overseeing technical consulting and end-to-end deployment for enterprise solutions, focusing on security, scalability, and account structure." },
+                { need: "Facilitate customer-facing workshops and develop a migration deployment plan.", provide: "I have successfully developed and executed migration plans for thousands of users, creating the strategy and guidance needed for a smooth transition from legacy platforms." },
+                { need: "Collaborate with Customer Success, Account Managers, Support, and Product teams.", provide: "I excel at cross-functional collaboration, having worked closely with Success, Sales, and Product teams to provide technical insights that support customer renewals and expansions." },
+                { need: "Deliver a positive experience for the customer that deepens our relationship.", provide: "I maintained 100% satisfaction with executive-level stakeholders by delivering high-priority support, demonstrating my ability to build trust and deepen key relationships." },
+                { need: "Work internally to identify and detail process improvements.", provide: "I have a proven track record of using data from customer feedback and incidents to identify and drive process enhancements that improve system reliability and the overall customer experience." },
+            ],
+            certifications: [
+                { name: "Project Management Professional (PMP)", explanation: "The PMP certification validates my ability to manage complex, cross-functional projects from initiation to completion. This is directly applicable to leading customer onboarding, managing account consolidations, and executing migration plans, such as the Windows 10 migration for 8,000 users. It ensures I can deliver projects on time while managing stakeholder expectations, a key requirement for a Technical Architect." },
+                { name: "ITIL v4", explanation: "ITIL v4 provides a framework for delivering high-quality IT services that align with business needs. This knowledge is crucial for designing scalable enterprise solutions and ensuring long-term customer success. My experience chairing Incident Management rotations and improving service levels demonstrates my practical application of ITIL principles to create stable, reliable systems for customers." }
+            ],
+            skills: {
+                "Identity Providers": "Active Directory, Azure AD, Okta (basic)",
+                "Enterprise Security": "SAML/SSO, DLP, SIEM (basic)",
+                "Platforms & Tools": "Jira, Google Workspace, Microsoft Office, ServiceNow, Flexera"
+            }
+        };
+
         document.addEventListener('DOMContentLoaded', () => {
-            const jobItems = document.querySelectorAll('.job-item');
-            jobItems.forEach(item => {
-                item.addEventListener('click', () => {
-                    const details = item.querySelector('.job-details');
-                    const icon = item.querySelector('span');
-                    const isOpen = details.classList.toggle('open');
-                    icon.style.transform = isOpen ? 'rotate(45deg)' : 'rotate(0deg)';
-                });
+            const competencyChartCtx = document.getElementById('competencyChart').getContext('2d');
+            new Chart(competencyChartCtx, {
+                type: 'bar',
+                data: {
+                    labels: appData.competencies.map(c => c.name),
+                    datasets: [{
+                        label: 'Proficiency',
+                        data: appData.competencies.map(c => c.score),
+                        backgroundColor: 'rgba(217, 119, 6, 0.7)',
+                        borderColor: 'rgba(217, 119, 6, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: { x: { beginAtZero: true, max: 100 } }
+                }
             });
 
-            const competencyCtx = document.getElementById('competencyChart');
-            if (competencyCtx) {
-                new Chart(competencyCtx, {
-                    type: 'radar',
-                    data: {
-                        labels: [
-                            'License Optimization', 
-                            'Contract Management', 
-                            'Data & Reporting', 
-                            'Software Consolidation',
-                            'Vendor Management',
-                            'Budget Forecasting'
-                        ],
-                        datasets: [{
-                            label: 'Experience Level',
-                            data: [9, 9, 8, 8, 9, 7],
-                            backgroundColor: 'rgba(74, 109, 124, 0.2)',
-                            borderColor: 'rgba(74, 109, 124, 1)',
-                            pointBackgroundColor: 'rgba(74, 109, 124, 1)',
-                            pointBorderColor: '#fff',
-                            pointHoverBackgroundColor: '#fff',
-                            pointHoverBorderColor: 'rgba(74, 109, 124, 1)',
-                            borderWidth: 2
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                display: false
-                            },
-                            tooltip: {
-                                enabled: true,
-                                callbacks: {
-                                    label: function(context) {
-                                        let label = context.dataset.label || '';
-                                        if (label) {
-                                            label += ': ';
-                                        }
-                                        label += context.raw;
-                                        return label;
-                                    }
-                                }
-                            }
-                        },
-                        scales: {
-                            r: {
-                                beginAtZero: true,
-                                max: 10,
-                                grid: {
-                                    color: '#EAE8E1'
-                                },
-                                angleLines: {
-                                    color: '#EAE8E1'
-                                },
-                                pointLabels: {
-                                    font: {
-                                        size: 14,
-                                        family: "'Inter', sans-serif"
-                                    },
-                                    color: '#3D3D3D'
-                                },
-                                ticks: {
-                                    backdropColor: 'rgba(255, 255, 255, 0.75)',
-                                    color: '#3D3D3D'
-                                }
-                            }
-                        }
+            const experienceContainer = document.getElementById('experience-container');
+            appData.experience.forEach(job => {
+                const jobCard = document.createElement('div');
+                jobCard.className = 'experience-card bg-white rounded-xl shadow-lg border border-stone-200/80 overflow-hidden';
+                
+                let bulletsHtml = job.bullets.map(bullet => `<li class="py-3 border-b last:border-b-0 border-stone-200">${bullet}</li>`).join('');
+
+                jobCard.innerHTML = `
+                    <div class="experience-header p-6 cursor-pointer flex justify-between items-center">
+                        <div>
+                            <h3 class="text-2xl font-bold text-stone-800">${job.role}</h3>
+                            <p class="text-md text-stone-500">${job.company}</p>
+                        </div>
+                        <span class="experience-toggle-icon text-amber-600 text-3xl font-light">+</span>
+                    </div>
+                    <div class="experience-content px-6">
+                        <ul class="pb-6">${bulletsHtml}</ul>
+                    </div>
+                `;
+                experienceContainer.appendChild(jobCard);
+            });
+
+            experienceContainer.addEventListener('click', (e) => {
+                const header = e.target.closest('.experience-header');
+                if (header) {
+                    const card = header.closest('.experience-card');
+                    card.classList.toggle('open');
+                }
+            });
+
+            const alignmentContainer = document.getElementById('alignment-container');
+            appData.alignment.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'alignment-card rounded-xl p-6';
+                card.innerHTML = `
+                    <div class="mb-4">
+                        <h4 class="font-bold text-amber-700 mb-1">What Miro Needs:</h4>
+                        <p class="text-stone-600">${item.need}</p>
+                    </div>
+                    <div class="border-t border-stone-200 my-4"></div>
+                    <div>
+                        <h4 class="font-bold text-emerald-700 mb-1">What I Provide:</h4>
+                        <p class="text-stone-800 font-medium">${item.provide}</p>
+                    </div>
+                `;
+                alignmentContainer.appendChild(card);
+            });
+            
+            const certsContainer = document.getElementById('certifications-container');
+            appData.certifications.forEach(cert => {
+                const card = document.createElement('div');
+                card.className = 'bg-white p-8 rounded-xl shadow-lg border border-stone-200/80';
+                card.innerHTML = `
+                    <h3 class="text-2xl font-bold text-stone-800 mb-3">${cert.name}</h3>
+                    <p class="text-stone-700 leading-relaxed">${cert.explanation}</p>
+                `;
+                certsContainer.appendChild(card);
+            });
+            
+            const skillsContainer = document.getElementById('skills-container');
+            let skillsHtml = '<ul class="space-y-4">';
+            for(const [category, list] of Object.entries(appData.skills)) {
+                skillsHtml += `<li><strong class="text-stone-800">${category}:</strong> <span class="text-stone-600">${list}</span></li>`;
+            }
+            skillsHtml += '</ul>';
+            skillsContainer.innerHTML = skillsHtml;
+
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('header nav a');
+            window.onscroll = () => {
+                let current = 'intro';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 70) {
+                        current = section.getAttribute('id');
                     }
                 });
-            }
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').includes(current)) {
+                        link.classList.add('active');
+                    }
+                });
+            };
         });
     </script>
-
 </body>
 </html>
