@@ -132,7 +132,7 @@
         <section id="certifications" class="py-12 md:py-16">
             <h2 class="text-3xl md:text-4xl font-bold text-center text-stone-800 mb-4">Strategic Certifications</h2>
             <p class="max-w-3xl mx-auto text-center text-lg text-stone-600 mb-12">My certifications are more than just credentials; they represent a formal commitment to the methodologies that ensure successful project delivery and service management.</p>
-            <div class="grid md:grid-cols-2 gap-8" id="certifications-container">
+            <div class="grid md:grid-cols-1 lg:grid-cols-3 gap-8" id="certifications-container">
             </div>
         </section>
 
@@ -204,7 +204,8 @@
             ],
             certifications: [
                 { name: "Project Management Professional (PMP)", explanation: "The PMP certification validates my ability to manage complex, cross-functional projects from initiation to completion. This is directly applicable to leading customer onboarding, managing account consolidations, and executing migration plans, such as the Windows 10 migration for 8,000 users. It ensures I can deliver projects on time while managing stakeholder expectations, a key requirement for a Technical Architect." },
-                { name: "ITIL v4", explanation: "ITIL v4 provides a framework for delivering high-quality IT services that align with business needs. This knowledge is crucial for designing scalable enterprise solutions and ensuring long-term customer success. My experience chairing Incident Management rotations and improving service levels demonstrates my practical application of ITIL principles to create stable, reliable systems for customers." }
+                { name: "ITIL v4", explanation: "ITIL v4 provides a framework for delivering high-quality IT services that align with business needs. This knowledge is crucial for designing scalable enterprise solutions and ensuring long-term customer success. My experience chairing Incident Management rotations and improving service levels demonstrates my practical application of ITIL principles to create stable, reliable systems for customers." },
+                { name: "Certified Scrum Product Owner (CSPO)", explanation: "The CSPO certification demonstrates a deep understanding of the product development lifecycle from the customer's perspective. It equips me to effectively act as the voice of the customer, a key aspect of this role which serves as a link to the Product organization. This knowledge allows me to translate customer needs and technical requirements into actionable insights for the product team, ensuring that Miro's evolution aligns with the strategic objectives of its enterprise clients." }
             ],
             skills: {
                 "Identity Providers": "Active Directory, Azure AD, Okta (basic)",
@@ -287,7 +288,7 @@
             const certsContainer = document.getElementById('certifications-container');
             appData.certifications.forEach(cert => {
                 const card = document.createElement('div');
-                card.className = 'bg-white p-8 rounded-xl shadow-lg border border-stone-200/80';
+                card.className = 'bg-white p-8 rounded-xl shadow-lg border border-stone-200/80 flex flex-col';
                 card.innerHTML = `
                     <h3 class="text-2xl font-bold text-stone-800 mb-3">${cert.name}</h3>
                     <p class="text-stone-700 leading-relaxed">${cert.explanation}</p>
